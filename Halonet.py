@@ -7,22 +7,6 @@ from typing import Type, Any, Callable, Union, List, Optional
 import torch
 from halonet_pytorch import HaloAttention
 
-__all__ = ['ResNet', 'resnet18', 'resnet34', 'resnet50', 'resnet101',
-           'resnet152', 'resnext50_32x4d', 'resnext101_32x8d',
-           'wide_resnet50_2', 'wide_resnet101_2']
-
-
-model_urls = {
-    'resnet18': 'https://download.pytorch.org/models/resnet18-f37072fd.pth',
-    'resnet34': 'https://download.pytorch.org/models/resnet34-b627a593.pth',
-    'resnet50': 'https://download.pytorch.org/models/resnet50-0676ba61.pth',
-    'resnet101': 'https://download.pytorch.org/models/resnet101-63fe2227.pth',
-    'resnet152': 'https://download.pytorch.org/models/resnet152-394f9c45.pth',
-    'resnext50_32x4d': 'https://download.pytorch.org/models/resnext50_32x4d-7cdf4587.pth',
-    'resnext101_32x8d': 'https://download.pytorch.org/models/resnext101_32x8d-8ba56ff5.pth',
-    'wide_resnet50_2': 'https://download.pytorch.org/models/wide_resnet50_2-95faca4d.pth',
-    'wide_resnet101_2': 'https://download.pytorch.org/models/wide_resnet101_2-32ee1156.pth',
-}
 
 
 def conv3x3(in_planes: int, out_planes: int, stride: int = 1, groups: int = 1, dilation: int = 1) -> nn.Conv2d:
@@ -37,52 +21,9 @@ def conv1x1(in_planes: int, out_planes: int, stride: int = 1) -> nn.Conv2d:
 
 
 class BasicBlock(nn.Module):
-    expansion: int = 1
-
-    def __init__(
-        self,
-        inplanes: int,
-        planes: int,
-        stride: int = 1,
-        downsample: Optional[nn.Module] = None,
-        groups: int = 1,
-        base_width: int = 64,
-        dilation: int = 1,
-        norm_layer: Optional[Callable[..., nn.Module]] = None
-    ) -> None:
-        super(BasicBlock, self).__init__()
-        if norm_layer is None:
-            norm_layer = nn.BatchNorm2d
-        if groups != 1 or base_width != 64:
-            raise ValueError('BasicBlock only supports groups=1 and base_width=64')
-        if dilation > 1:
-            raise NotImplementedError("Dilation > 1 not supported in BasicBlock")
-        # Both self.conv1 and self.downsample layers downsample the input when stride != 1
-        self.conv1 = conv3x3(inplanes, planes, stride)
-        self.bn1 = norm_layer(planes)
-        self.relu = nn.ReLU(inplace=True)
-        self.conv2 = conv3x3(planes, planes)
-        self.bn2 = norm_layer(planes)
-        self.downsample = downsample
-        self.stride = stride
-
-    def forward(self, x: Tensor) -> Tensor:
-        identity = x
-
-        out = self.conv1(x)
-        out = self.bn1(out)
-        out = self.relu(out)
-
-        out = self.conv2(out)
-        out = self.bn2(out)
-
-        if self.downsample is not None:
-            identity = self.downsample(x)
-
-        out += identity
-        out = self.relu(out)
-
-        return out
+    #TODO:
+    def __init__():
+        self.init = 'ToDO'
 
 
 class Bottleneck(nn.Module):
@@ -150,7 +91,7 @@ class Bottleneck(nn.Module):
         # out = self.bn2(out)
         out  =  self.attn(out)
         if self.verbose:
-            print('\n\n\n AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA \n\n',
+            print('\n\n',
               'out attn shape ', out.shape)
         out = self.relu(out)
 
@@ -326,11 +267,7 @@ def _halonet(
 
 
 def halonetB0(pretrained: bool = False, progress: bool = True, **kwargs: Any) -> HaloNet:
-    r"""halonetB0-18 model from
-    `"Deep Residual Learning for Image Recognition" <https://arxiv.org/pdf/1512.03385.pdf>`_.
-    Args:
-        pretrained (bool): If True, returns a model pre-trained on ImageNet
-        progress (bool): If True, displays a progress bar of the download to stderr
+    r"""
     """
     # (arg1: number of block by stage, arg2: nb of heads, args3: rv, args4: rb, args5: df )
     return _halonet('halonetB0', Bottleneck, {'block_size':8, 'halo_size':3,'stage0':(3,4), 'stage1':(3,8),
@@ -338,11 +275,7 @@ def halonetB0(pretrained: bool = False, progress: bool = True, **kwargs: Any) ->
                                             'rv':1, 'rb':0.5, 'df':-1}, pretrained, progress,
                    **kwargs)
 def halonetB1(pretrained: bool = False, progress: bool = True, **kwargs: Any) -> HaloNet:
-    r"""halonetB0-18 model from
-    `"Deep Residual Learning for Image Recognition" <https://arxiv.org/pdf/1512.03385.pdf>`_.
-    Args:
-        pretrained (bool): If True, returns a model pre-trained on ImageNet
-        progress (bool): If True, displays a progress bar of the download to stderr
+    r"""h
     """
     # (arg1: number of block by stage, arg2: nb of heads, args3: rv, args4: rb, args5: df )
     return _halonet('halonetB1', Bottleneck, {'block_size':8, 'halo_size':3,'stage0':(3,4), 'stage1':(3,8),
@@ -350,66 +283,42 @@ def halonetB1(pretrained: bool = False, progress: bool = True, **kwargs: Any) ->
                                             'rv':1, 'rb':1, 'df':-1}, pretrained, progress,
                    **kwargs)
 def halonetB2(pretrained: bool = False, progress: bool = True, **kwargs: Any) -> HaloNet:
-    r"""halonetB0-18 model from
-    `"Deep Residual Learning for Image Recognition" <https://arxiv.org/pdf/1512.03385.pdf>`_.
-    Args:
-        pretrained (bool): If True, returns a model pre-trained on ImageNet
-        progress (bool): If True, displays a progress bar of the download to stderr
+    r"""h
     """
     # (arg1: number of block by stage, arg2: nb of heads, args3: rv, args4: rb, args5: df )
     return _halonet('halonetB2', Bottleneck, {'block_size':8, 'halo_size':3,'stage0':(3,4), 'stage1':(3,8),
                                             'stage2':(11,8), 'stage3':(3,8),
                                             'rv':1, 'rb':1.25, 'df':-1}, pretrained, progress,**kwargs)
 def halonetB3(pretrained: bool = False, progress: bool = True, **kwargs: Any) -> HaloNet:
-    r"""halonetB0-18 model from
-    `"Deep Residual Learning for Image Recognition" <https://arxiv.org/pdf/1512.03385.pdf>`_.
-    Args:
-        pretrained (bool): If True, returns a model pre-trained on ImageNet
-        progress (bool): If True, displays a progress bar of the download to stderr
+    r"""h
     """
     # (arg1: number of block by stage, arg2: nb of heads, args3: rv, args4: rb, args5: df )
     return _halonet('halonetB3', Bottleneck, {'block_size':10, 'halo_size':3,'stage0':(3,4), 'stage1':(3,8),
                                             'stage2':(12,8), 'stage3':(3,8),
                                             'rv':1, 'rb':1.5, 'df':1024}, pretrained, progress,**kwargs)
 def halonetB4(pretrained: bool = False, progress: bool = True, **kwargs: Any) -> HaloNet:
-    r"""halonetB0-18 model from
-    `"Deep Residual Learning for Image Recognition" <https://arxiv.org/pdf/1512.03385.pdf>`_.
-    Args:
-        pretrained (bool): If True, returns a model pre-trained on ImageNet
-        progress (bool): If True, displays a progress bar of the download to stderr
+    r"""h
     """
     # (arg1: number of block by stage, arg2: nb of heads, args3: rv, args4: rb, args5: df )
     return _halonet('halonetB4', Bottleneck, {'block_size':12, 'halo_size':2,'stage0':(3,4), 'stage1':(3,8),
                                             'stage2':(12,8), 'stage3':(3,8),
                                             'rv':1, 'rb':3, 'df':1280}, pretrained, progress,**kwargs)
 def halonetB5(pretrained: bool = False, progress: bool = True, **kwargs: Any) -> HaloNet:
-    r"""halonetB0-18 model from
-    `"Deep Residual Learning for Image Recognition" <https://arxiv.org/pdf/1512.03385.pdf>`_.
-    Args:
-        pretrained (bool): If True, returns a model pre-trained on ImageNet
-        progress (bool): If True, displays a progress bar of the download to stderr
+    r"""h
     """
     # (arg1: number of block by stage, arg2: nb of heads, args3: rv, args4: rb, args5: df )
     return _halonet('halonetB5', Bottleneck, {'block_size':14, 'halo_size':2,'stage0':(3,4), 'stage1':(3,8),
                                             'stage2':(23,8), 'stage3':(3,8),
                                             'rv':2.5, 'rb':2, 'df':1536}, pretrained, progress,**kwargs)
 def halonetB6(pretrained: bool = False, progress: bool = True, **kwargs: Any) -> HaloNet:
-    r"""halonetB0-18 model from
-    `"Deep Residual Learning for Image Recognition" <https://arxiv.org/pdf/1512.03385.pdf>`_.
-    Args:
-        pretrained (bool): If True, returns a model pre-trained on ImageNet
-        progress (bool): If True, displays a progress bar of the download to stderr
+    r"""
     """
     # (arg1: number of block by stage, arg2: nb of heads, args3: rv, args4: rb, args5: df )
     return _halonet('halonetB5', Bottleneck, {'block_size':8, 'halo_size':4,'stage0':(3,4), 'stage1':(3,8),
                                             'stage2':(24,8), 'stage3':(3,8),
                                             'rv':3, 'rb':2.75, 'df':1536}, pretrained, progress,**kwargs)
 def halonetB7(pretrained: bool = False, progress: bool = True, **kwargs: Any) -> HaloNet:
-    r"""halonetB0-18 model from
-    `"Deep Residual Learning for Image Recognition" <https://arxiv.org/pdf/1512.03385.pdf>`_.
-    Args:
-        pretrained (bool): If True, returns a model pre-trained on ImageNet
-        progress (bool): If True, displays a progress bar of the download to stderr
+    r"""h
     """
     # (arg1: number of block by stage, arg2: nb of heads, args3: rv, args4: rb, args5: df )
     return _halonet('halonetB7', Bottleneck, {'block_size':10, 'halo_size':3,'stage0':(3,4), 'stage1':(3,8),
