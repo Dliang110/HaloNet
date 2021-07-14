@@ -129,7 +129,7 @@ class Bottleneck(nn.Module):
             dim_head = round( dim_head * rv),   #* rv   # dimension of each head
             heads = heads          # number of attention heads
         )
-        print(' self.expansion    ', self.expansion )
+        #print(' self.expansion    ', self.expansion )
         self.conv3 = conv1x1( round(width ), round(planes * self.expansion * rb))
         self.bn3 = norm_layer( round(planes * self.expansion * rb))
         self.relu = nn.ReLU(inplace=True)
@@ -139,8 +139,8 @@ class Bottleneck(nn.Module):
 
     def forward(self, x: Tensor) -> Tensor:
         identity = x
-        print('ID sahpe ', identity.shape)
-        print('X SHAPE ', x.shape)
+        #print('ID sahpe ', identity.shape)
+        #print('X SHAPE ', x.shape)
         out = self.conv1(x)
         out = self.bn1(out)
         out = self.relu(out)
@@ -158,11 +158,11 @@ class Bottleneck(nn.Module):
         out = self.bn3(out)
         if self.verbose:
             print('out Conv2 shape ', out.shape)
-        print('Identity shape  ', identity.shape)
-        print('Downsample ', self.downsample)
+        #print('Identity shape  ', identity.shape)
+        #print('Downsample ', self.downsample)
         if self.downsample is not None:
             identity = self.downsample(x)
-            print('Identity shape after downsampling ', identity.shape)
+            #print('Identity shape after downsampling ', identity.shape)
         out += identity
         out = self.relu(out)
         if self.verbose:
@@ -177,7 +177,7 @@ class HaloNet(nn.Module):
         self,
         block: Type[Union[BasicBlock, Bottleneck]],
         layers: dict,
-        num_classes: int = 1000,
+        num_classes: int = 10,
         zero_init_residual: bool = False,
         groups: int = 1,
         width_per_group: int = 64,
@@ -216,11 +216,11 @@ class HaloNet(nn.Module):
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
         self.layer1 = self._make_layer(block, 64, layers['stage0'][0], block_size= self.block_size,
                                      halo_size=self.halo_size, dim_head= self.dim_head, heads= layers['stage0'][1],
-                                      rv=self.rv, rb=self.rb , verbose= True )
+                                      rv=self.rv, rb=self.rb , verbose= False )
         self.layer2 = self._make_layer(block, 128, layers['stage1'][0], block_size= self.block_size,
                                      halo_size=self.halo_size, dim_head= self.dim_head, heads= layers['stage1'][1], stride=1,
                                        dilate=replace_stride_with_dilation[0],
-                                        rv=self.rv, rb=self.rb, verbose= True )
+                                        rv=self.rv, rb=self.rb, verbose= False )
         self.layer3 = self._make_layer(block, 256, layers['stage2'][0], block_size= self.block_size,
                                      halo_size=self.halo_size, dim_head= self.dim_head, heads= layers['stage2'][1], stride=1,
                                        dilate=replace_stride_with_dilation[0],
@@ -289,12 +289,12 @@ class HaloNet(nn.Module):
         x = self.bn1(x)
         x = self.relu(x)
         x = self.maxpool(x)
-        print('BF layer 1: ', x.shape)
+        #print('BF layer 1: ', x.shape)
         x = self.layer1(x)
-        print('\n\n+++++++++++++++++++++++++++++\n\nlayer1 x shape ', x.shape)
+        #print('\n\n+++++++++++++++++++++++++++++\n\nlayer1 x shape ', x.shape)
         x = self.layer2(x)
-        print('layer2 x shape ', x.shape)
-        print('\n\n+++++++++++++++++++++++++++++\n\nlayer2 x shape ', x.shape)
+        #print('layer2 x shape ', x.shape)
+        #print('\n\n+++++++++++++++++++++++++++++\n\nlayer2 x shape ', x.shape)
         x = self.layer3(x)
         x = self.layer4(x)
         if self.df  != -1 :
