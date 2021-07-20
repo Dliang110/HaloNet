@@ -18,7 +18,7 @@ class VH_AE(nn.Module):
         super(VH_AE, self).__init__()
         self.halonetH6 = Halonet.halonetB6( )
         self.decoder = Decoder.decoder2(in_channels = 2816)
-		self.train =  train
+        self.train =  train
         if self.Train:
             print("\nInitializing network weights.........")
             initialize_weights(self.halonetH6, self.decoder)
@@ -75,7 +75,7 @@ def initialize_weights(*models):
 #         noise = torch.randn(latent.size()).cuda()
 #         latent = latent + latent * noise
 #         return latent
-
+#TETS
 if __name__ == "__main__":
     from torchsummary import summary
 
