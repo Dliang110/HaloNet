@@ -326,6 +326,12 @@ def halonetB7(pretrained: bool = False, progress: bool = True, **kwargs: Any) ->
                                             'rv':4, 'rb':3.50, 'df':2048}, pretrained, progress,**kwargs)
 if __name__ == '__main__':
     from torchsummary import summary
-    model = halonetB7()
+    model = halonetB6().cuda()
     #print(model)
-    summary(model, (3,600,600))
+    model = torch.nn.Sequential(*(list(model.children())[:-3]))
+    summary(model, (3,256,256))
+
+    img = torch.randn(1,3,256,256).cuda()
+    #mask = torch.ones(1, image_size//patch_size, image_size//patch_size).bool().cuda() # optional mask, designating which patch to attend to
+    preds = model(img) # (1, 1000)
+    print(preds.size())
