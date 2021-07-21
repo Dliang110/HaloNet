@@ -16,8 +16,9 @@ class VH_AE(nn.Module):
     def __init__(self, train = True):
 
         super(VH_AE, self).__init__()
-        self.halonetH6 = Halonet.halonetB6( )
-        self.decoder = decoder2(in_channels = 2816)
+        self.halonetH6 = Halonet.halonetB6( ).cuda(0)
+        self.halonetH6 = torch.nn.Sequential(*(list(self.halonetH6.children())[:-3]))
+        self.decoder = decoder2(in_channels = 2816).cuda(1)
         self.Train =  train
         if self.Train:
             print("\nInitializing network weights.........")
@@ -26,6 +27,7 @@ class VH_AE(nn.Module):
     def forward(self,x):
         b = x.size(0)
         encoded = self.halonetH6(x)
+        encoded = encoded.cuda(1)
         # if self.Train:
         #     encoded = add_noise(encoded)
         # encoded1, vectors = self.Digcap(encoded.view(b,encoded.size(1)*8*8,-1))
@@ -79,7 +81,7 @@ def initialize_weights(*models):
 if __name__ == "__main__":
     from torchsummary import summary
 
-    mod = VH_AE().cuda()
+    mod = VH_AE()
     print(mod)
     summary(mod, (3,256,256))
 
