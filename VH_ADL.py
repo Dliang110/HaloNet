@@ -6,7 +6,7 @@
 import torch
 import torch.nn as nn
 import Halonet
-from  Decoder import  decoder2
+from  Decoder  import  decoder2
 
 
 #### NETWORK DECLARATION ####
@@ -17,8 +17,8 @@ class VH_AE(nn.Module):
 
         super(VH_AE, self).__init__()
         self.halonetH6 = Halonet.halonetB6( )
-        self.decoder = Decoder.decoder2(in_channels = 2816)
-        self.train =  train
+        self.decoder = decoder2(in_channels = 2816)
+        self.Train =  train
         if self.Train:
             print("\nInitializing network weights.........")
             initialize_weights(self.halonetH6, self.decoder)
@@ -29,7 +29,7 @@ class VH_AE(nn.Module):
         # if self.Train:
         #     encoded = add_noise(encoded)
         # encoded1, vectors = self.Digcap(encoded.view(b,encoded.size(1)*8*8,-1))
-        recons = self.decoder(encoded))
+        recons = self.decoder(encoded)
         # pi, mu, sigma = self.G_estimate(encoded)
         # return encoded, pi, sigma, mu, recons
 
@@ -81,7 +81,7 @@ if __name__ == "__main__":
 
     mod = VH_AE().cuda()
     print(mod)
-    summary(mod, (3,512,512))
+    summary(mod, (3,256,256))
 
 
 {"mode":"full","isActive":false}
