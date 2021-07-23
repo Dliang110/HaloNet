@@ -126,7 +126,7 @@ for i in range(epoch):
         model.zero_grad()
 
         # vector,pi, mu, sigma, reconstructions = model(j.cuda())
-        vector, reconstructions = model(j.cuda())
+        vector, reconstructions = model(j.cuda(0))
         pi, mu, sigma = G_estimate(vector)
         #print(pi, mu, sigma)
         #Loss calculations
@@ -184,5 +184,4 @@ SS - trained with ssim loss
 
 
 '''
-{"mode":"full","isActive":false}
-{"mode":"full","isActive":false}
+

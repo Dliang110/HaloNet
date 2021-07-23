@@ -63,8 +63,8 @@ class Mnist(data.Dataset):
         # High color augmntation
         # Random orientation
         self.transform = transforms.Compose([
-            transforms.Resize((550,550)),
-            transforms.CenterCrop(512),
+            transforms.Resize((260,260)),
+            transforms.CenterCrop(256),
 #             transforms.RandomHorizontalFlip(p=0.5),
 #             transforms.RandomVerticalFlip(p=0.5),
             transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0),
@@ -105,4 +105,4 @@ if __name__ == "__main__":
 		plt.imshow(b.transpose(1,2,0))
 		plt.savefig('original.png')
 		break
-{"mode":"full","isActive":false}
+

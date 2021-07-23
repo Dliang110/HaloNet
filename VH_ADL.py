@@ -28,6 +28,13 @@ class VH_AE(nn.Module):
         b = x.size(0)
         encoded = self.halonetH6(x)
         encoded = encoded.cuda(1)
+        device_id = encoded.device.index
+        print('\n\n (((((((((((((((((((((((((((((((((((((((((((((((((( \n\n ', 'device_id' , device_id ,
+            '\n\n (((((((((((((((((((((((((((((((((((((((((((((((((( \n\n ' )
+        device_id = self.decoder.device.index
+
+        print('\n\n (((((((((((((((((((((((((((((((((((((((((((((((((( \n\n ', 'self.decoder device_id' , device_id ,
+            '\n\n (((((((((((((((((((((((((((((((((((((((((((((((((( \n\n ' )
         # if self.Train:
         #     encoded = add_noise(encoded)
         # encoded1, vectors = self.Digcap(encoded.view(b,encoded.size(1)*8*8,-1))
@@ -86,4 +93,3 @@ if __name__ == "__main__":
     summary(mod, (3,256,256))
 
 
-{"mode":"full","isActive":false}

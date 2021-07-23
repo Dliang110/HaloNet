@@ -20,7 +20,7 @@ OUT_DIM = IN_DIM
 class MDN1(nn.Module):
 
     def __init__(self, input_dim=IN_DIM, out_dim=OUT_DIM, layer_size=IN_DIM, coefs=COEFS, test=False, sd=0.5):
-        super(MDN, self).__init__()
+        super(MDN1, self).__init__()
         self.in_features = input_dim
 
         self.pi = nn.Linear(layer_size, coefs, bias=False)
@@ -143,4 +143,3 @@ if __name__ == "__main__":
 
 
 
-{"mode":"full","isActive":false}
